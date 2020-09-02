@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-          label 'promo-app'
+          cloud 'kube-docker-desktop'
           idleMinutes 5
         }
     }
