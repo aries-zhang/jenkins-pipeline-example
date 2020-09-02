@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+          label 'promo-app'
+          idleMinutes 5
+        }
+    }
 
     stages {
         stage('Build') {
