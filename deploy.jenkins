@@ -1,9 +1,3 @@
-def configuration = [vaultUrl: 'http://vault:8200',  vaultCredentialId: 'vault-approle', engineVersion: 2]
-def secrets = [path: 'secret/jenkins/example-job', engineVersion: 2, secretValues: [
-    [envVar: 'PRIVATE_TOKEN', vaultKey: 'test-secret1'],
-    [envVar: 'TEST_TOKEN', vaultKey: 'test-secret2']
-  ]
-]
 pipeline {
     agent {
         kubernetes {
@@ -15,7 +9,15 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                withVault([
+                    configuration: [vaultUrl: 'http://vault:8200',  vaultCredentialId: 'vault-approle', engineVersion: 2], 
+                    vaultSecrets: [
+                        [path: 'secret/jenkins/example-job', engineVersion: 2, secretValues: [
+                            [envVar: 'PRIVATE_TOKEN', vaultKey: 'test-secret1'],
+                            [envVar: 'TEST_TOKEN', vaultKey: 'test-secret1']
+                        ]]
+                    ]
+                ]) {
                     sh "echo ${env.PRIVATE_TOKEN}"
                     sh "echo ${env.TEST_TOKEN}"
                 }
