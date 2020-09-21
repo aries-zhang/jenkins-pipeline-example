@@ -1,7 +1,7 @@
 def configuration = [$class: 'VaultTokenCredentialBinding', vaultUrl: 'http://vault:8200',  vaultCredentialId: 'vault-approle', engineVersion: 2]
-def secrets = [path: 'secret/jenkins/job-example', engineVersion: 2, secretValues: [
-    [envVar: 'PRIVATE_TOKEN', vaultKey: 'private-token'],
-    [envVar: 'TEST_TOKEN', vaultKey: 'test-token']
+def secrets = [path: 'secret/jenkins/example-job', engineVersion: 2, secretValues: [
+    [envVar: 'PRIVATE_TOKEN', vaultKey: 'test-secret1'],
+    [envVar: 'TEST_TOKEN', vaultKey: 'test-secret2']
   ]
 ]
 pipeline {
