@@ -9,15 +9,13 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                withVault([
-                    configuration: [vaultUrl: 'http://vault:8200',  vaultCredentialId: 'vault-approle', engineVersion: 2], 
-                    vaultSecrets: [
-                        path: 'secret/jenkins/job-example', engineVersion: 2, secretValues: [
-                            [envVar: 'PRIVATE_TOKEN', vaultKey: 'private-token'],
-                            [envVar: 'TEST_TOKEN', vaultKey: 'test-token']
-                        ]
-                    ]
-                ]) {
+                def configuration = [vaultUrl: 'http://vault:8200',  vaultCredentialId: 'vault-approle', engineVersion: 2]
+                def secrets = [path: 'secret/jenkins/job-example', engineVersion: 2, secretValues: [
+                                    [envVar: 'PRIVATE_TOKEN', vaultKey: 'private-token'],
+                                    [envVar: 'TEST_TOKEN', vaultKey: 'test-token']
+                                  ]
+                               ]
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
                     sh "echo ${env.PRIVATE_TOKEN}"
                     sh "echo ${env.TEST_TOKEN}"
                 }
